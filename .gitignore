@@ -28,3 +28,8 @@ Homestead.json
 .env.production
 .phpactor.json
 auth.json
+<<<<<<< HEAD
+=======
+docker/mysql/data/ib_logfile1
+docker/mysql/data/*
+>>>>>>> bd6e8e6 (init commit)

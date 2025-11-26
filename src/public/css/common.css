@@ -1,0 +1,95 @@
+.header {
+    max-width: 1540px;
+    height: 65px;
+}
+
+.header__inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 auto;
+    padding: 0 40px;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+}
+
+.header-logo__content {
+    display: flex;
+    align-items: center;
+    min-width: 300px;
+    height: 32px;
+}
+
+.header-logo__link {
+    width: 100%;
+    height: 100%;
+}
+
+.header-logo {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.header__search-form {
+    display: flex;
+    align-items: center;
+    max-width: 490px;
+    min-width: 250px;
+    margin: 0 10px;
+    width: 100%;
+    height: 45px;
+}
+
+.header__search-input {
+    height: 100%;
+    width: 100%;
+    border-radius: 5px;
+    font-size: 22px;
+    text-indent: 15px;
+}
+
+.header__nav {
+    max-width: 365px;
+    width: 100%;
+}
+
+.header__nav-list {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header__nav-button,
+.header__mypage-button,
+.header__sell-button {
+    text-decoration: none;
+    font-size: 22px;
+}
+
+.header__nav-button,
+.header__mypage-button {
+    color: white;
+}
+
+.header__nav-button {
+    max-width: 110px;
+    width: 100%;
+    display: inline-block;
+    background-color: black;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.header__mypage-button {
+    margin: 0 10px;
+}
+
+.header__sell-button {
+    background-color: white;
+    color: black;
+    padding: 5px 20px;
+    border-radius: 3px;
+}

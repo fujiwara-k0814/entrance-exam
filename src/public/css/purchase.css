@@ -1,0 +1,223 @@
+.purchase__content {
+    max-width: 1540px;
+}
+
+.purchase-form {
+    display: flex;
+    justify-content: space-between;
+    padding: 90px 80px;
+}
+
+.purchase-item__content {
+    max-width: 810px;
+    width: 100%;
+}
+
+.item__content {
+    display: flex;
+    padding-bottom: 50px;
+    border-bottom: 1px solid black;
+}
+
+.item-image__inner {
+    width: 200px;
+    height: 200px;
+}
+
+.item-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.item__heading {
+    margin-left: 60px;
+}
+
+.item-name {
+    display: inline;
+    line-height: 100%;
+}
+
+.item-price__content {
+    margin-top: 20px;
+}
+
+.yen-mark {
+    font-size: 22px;
+    margin-right: 5px;
+}
+
+.item-price {
+    font-size: 26px;
+    font-family: 'Roboto', 'Helvetica Neue', sans-serif;
+}
+
+.item-payment__content {
+    padding: 30px 0 50px 0;
+    border-bottom: 1px solid black;
+}
+
+.item-payment__label {
+    margin-left: 30px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.item-payment__select,
+.item-payment__select::picker(select) {
+    appearance: base-select;
+}
+
+.item-payment__select {
+    width: 250px;
+    height: 30px;
+    color: #5f5f5f;
+    font-weight: 600;
+    border: 1px solid #5f5f5f;
+    border-radius: 3px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    margin: 40px 0 0 100px;
+}
+
+.item-payment__select {
+    &::picker-icon {
+        content: "▼";
+        color: #5f5f5f;
+        font-size: 12px;
+    }
+}
+
+.payment-option {
+    background-color: #636769;
+    color: white;
+}
+
+.payment-option:checked {
+    background-color: #5599eb;
+}
+
+.payment-option:hover,
+option:focus-visible {
+    background-color: #5599eb;
+    outline: none;
+}
+
+.purchase-form__error {
+    font-size: 16px;
+    color: red;
+    margin-left: 100px;
+}
+
+.item-delivery__content {
+    padding: 30px 0 50px 0;
+    border-bottom: 1px solid black;
+}
+
+.item-delivery__label-wrapper {
+    margin: 0 30px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.item-delivery__label {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.delivery-address__link {
+    font-size: 16px;
+    text-decoration: none;
+    color: #0073cc;
+}
+
+.postal-code__content {
+    margin: 40px 0 0 100px;
+}
+
+.address__content {
+    margin-left: 100px;
+}
+
+.postal-mark,
+.postal-code,
+.delivery-address,
+.delivery-building {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.delivery-building {
+    margin-left: 10px;
+}
+
+.purchase-payment__content {
+    max-width: 550px;
+    width: 100%;
+    padding-left: 90px;
+}
+
+.payment-table {
+    width: 100%;
+    height: 250px;
+}
+
+.table-row {
+    border: 1px solid black;
+    width: 100%;
+    height: 50%;
+}
+
+.table-header {
+    font-size: 20px;
+    font-weight: 400;
+    width: 50%;
+}
+
+.table-data-price {
+    font-size: 28px;
+    font-weight: 400;
+    text-align: center;
+    font-family: 'Roboto','Helvetica Neue',sans-serif;
+    width: 50%;
+}
+
+.table-yen-mark {
+    font-size: 20px;
+    font-weight: 400;
+    margin-right: 5px;
+}
+
+.table-data-payment {
+    font-size: 24px;
+    font-weight: 400;
+    text-align: center;
+    width: 50%;
+}
+
+.purchase-form__button {
+    margin-top: 80px;
+    width: 100%;
+    background-color: #ff5555;
+    border: 1px solid #ff5555;
+    border-radius: 5px;
+    font-size: 20px;
+    color: white;
+    padding: 10px 0;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+@media (max-width: 1500px) {
+    .purchase-form {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .purchase-payment__content {
+        padding: 90px 45px 0 45px;
+    }
+}
