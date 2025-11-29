@@ -17,7 +17,7 @@
                     <img src="/images/logo.svg" alt="ロゴ画像" class="header-logo">
                 </a>
             </div>
-            @if (!in_array(Route::currentRouteName(), ['login', 'register', 'verification.notice']))
+            @if (!in_array(Route::currentRouteName(), ['login', 'register', 'verification.notice', 'user.message']))
                 <form action="/" method="get" class="header__search-form">
                     @if (request()->query('tab') === 'mylist')
                         <input type="hidden" name="tab" value="mylist">

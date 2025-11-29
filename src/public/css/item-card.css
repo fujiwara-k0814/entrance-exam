@@ -49,3 +49,29 @@
     font-size: 22px;
     color: black;
 }
+
+.notification-label__wrapper {
+    position: relative;
+    height: 100%;
+}
+
+.notification-label__content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: red;
+    padding: 5px;
+    width: 10%;
+    height: 10%;
+    clip-path: circle(50% at 50% 50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+}
+
+.notification-label {
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+}

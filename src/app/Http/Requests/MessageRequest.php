@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ProfileRequest extends FormRequest
+class MessageRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,25 +23,31 @@ class ProfileRequest extends FormRequest
      */
     public function rules()
     {
-        if (!$this->input('action')) {
+        if ($this->input('delete')) {
+            return [];
+        }
+
+        if ($this->input('edit')) {
+            return [
+                'message.*' => ['required', 'max:400'],
+            ];
+        }
+
+        if (!$this->input('send')) {
             return [
                 'image_path' => ['file', 'mimes:jpg,jpeg,png'],
             ];
         }
 
-        if ($this->input('action')) {
+        if ($this->input('send')) {
             if ($this->input('image_path')) {
                 return [
+                    'content' => ['required', 'max:400'],
                     'image_path' => ['regex:/\.(jpg|jpeg|png)$/i'],
-                    'name' => ['required'],
-                    'postal_code' => ['required', 'regex:/^\d{3}-\d{4}$/'],
-                    'address' => ['required'],
                 ];
             }
             return [
-                'name' => ['required'],
-                'postal_code' => ['required', 'regex:/^\d{3}-\d{4}$/'],
-                'address' => ['required'],
+                'content' => ['required', 'max:400'],
             ];
         }
     }
@@ -52,7 +58,9 @@ class ProfileRequest extends FormRequest
             'image_path.file' => '画像はファイルを指定してください',
             'image_path.mimes' => '画像の拡張子は.jpegまたは.pngを指定してください',
             'image_path.regex' => '画像の拡張子は.jpegまたは.pngを指定してください',
-            'postal_code.regex' => '郵便番号は「123-4567」の形式で入力してください'
+
+            'message.*.required' => '本文を入力してください',
+            'message.*.max' => '本文は400文字以内で入力してください',
         ];
     }
 }

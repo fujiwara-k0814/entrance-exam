@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Item;
 use App\Http\Requests\ProfileRequest;
+use App\Models\UserEvaluation;
 
 class MypageController extends Controller
 {
@@ -60,13 +61,48 @@ class MypageController extends Controller
         return redirect($redirectPath);
     }
 
-
     public function show(Request $request)
     {
         $user = Auth::user();
 
+        if (UserEvaluation::where('targeter_id', $user->id)) {
+            $average = round(UserEvaluation::where('targeter_id', $user->id)->avg('score'));
+        } else {
+            $average = null;
+        }
+
+        //取引中アイテムの取得
+        //購入済かつ取引未完了
+        //その中で自分が購入済かつ取引未完了、または出品済かつ取引未完了
+        //該当したアイテムの新規通知件数を取得
+        //通知新着順にソート
+        $transactionItems = Item::query()
+            ->whereNotNull('delivery_address_id')
+            ->where(function ($q) {
+                $q->whereHas('delivery_address', function ($q2) {
+                    $q2->where('user_id', Auth::id());
+                })->where('buyer_completed', false)
+                ->orWhereHas('sell', function ($q3) {
+                    $q3->where('user_id', Auth::id());
+                })->where('seller_completed', false);
+            })
+            ->withCount([
+                'messages as unread_messages_count' => function ($q) {
+                    $q->where('is_read', false)
+                        ->where('sender_id', '!=', Auth::id());
+                }
+            ])
+            ->with(['messages' => function ($q) {
+                $q->orderBy('created_at', 'asc');
+            }])
+            ->get();
+        //トータル通知件数
+        $totalNotifications = $transactionItems->sum('unread_messages_count');
+
         if ($request->query('page') === "buy") {
             $items = Item::where('delivery_address_id', $user->delivery_address->id)->get();
+        }elseif ($request->query('page') === "transaction") {
+            $items = $transactionItems;
         }else{
             $items = $user->soldItems;
         }
@@ -74,6 +110,6 @@ class MypageController extends Controller
         //プロフィール画像、出品画像リセット
         session()->forget(['profile_image_path', 'item_image_path']);
 
-        return view('mypage', compact('user', 'items'));
+        return view('mypage', compact('user', 'items', 'average', 'totalNotifications'));
     }
 }

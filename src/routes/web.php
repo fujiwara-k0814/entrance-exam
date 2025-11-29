@@ -10,6 +10,8 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\DeliveryAddressController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\VerifyEmailController;
+use App\Http\Controllers\MessageController;
+use App\Http\Controllers\TransactionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +39,11 @@ Route::middleware(['auth', 'verified', 'first.login'])->group(function(){
     Route::get('/mypage', [MypageController::class, 'show']);
     Route::post('/item/{item_id}/comment', [CommentController::class, 'store']);
     Route::post('/item/{item_id}/like', [LikeController::class, 'update']);
+    Route::get('/meessage/{item_id}', [MessageController::class, 'show'])
+        ->name('user.message');
+    Route::post('/meessage/{item_id}', [MessageController::class, 'store']);
+    Route::post('/meessage/edit/{message_id}', [MessageController::class, 'update']);
+    Route::post('/transaction/evaluation/{item_id}/{targetor_id}/{user_id}', [TransactionController::class, 'upsert']);
 });
 
 //認証済操作

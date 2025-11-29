@@ -16,31 +16,44 @@ class Item extends Model
         'name',
         'brand',
         'price',
-        'description'
+        'description',
+        'buyer_completed',
+        'seller_completed',
     ];
 
-    public function categories(){
+    public function categories()
+    {
         return $this->belongsToMany(Category::class);
     }
 
-    public function comments(){
+    public function comments()
+    {
         return $this->hasMany(Comment::class);
     }
 
-    public function condition(){
+    public function condition()
+    {
         return $this->belongsTo(Condition::class);
     }
 
-    public function delivery_address(){
+    public function delivery_address()
+    {
         return $this->belongsTo(DeliveryAddress::class);
     }
 
-    public function likes(){
+    public function likes()
+    {
         return $this->hasMany(Like::class);
     }
 
-    public function sell(){
+    public function sell()
+    {
         return $this->hasOne(Sell::class);
+    }
+
+    public function messages()
+    {
+        return $this->hasMany(Message::class);
     }
 
     //Items→Comments→Usersの紐づけ

@@ -22,6 +22,8 @@ class CreateItemsTable extends Migration
             $table->string('brand')->nullable();
             $table->integer('price');
             $table->text('description');
+            $table->boolean('buyer_completed')->default(false);
+            $table->boolean('seller_completed')->default(false);
             $table->timestamp('created_at')->useCurrent()->nullable();
             $table->timestamp('updated_at')->useCurrent()->nullable();
         });
