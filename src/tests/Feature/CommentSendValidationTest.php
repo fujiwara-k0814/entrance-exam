@@ -64,7 +64,6 @@ class CommentSendValidationTest extends TestCase
         $response->assertSee('コメント(1)');
     }
 
-
     public function testGuestCannotPostCommentToItem()
     {
         $this->seed(CategoriesTableSeeder::class);
@@ -104,7 +103,6 @@ class CommentSendValidationTest extends TestCase
         $response->assertSee('コメント(0)');
     }
 
-
     public function testValidationMessageIsShownWhenCommentBodyIsEmpty()
     {
         /** @var \App\Models\User $user */
@@ -129,7 +127,6 @@ class CommentSendValidationTest extends TestCase
         $response->assertSessionHasErrors(['body']);
         $this->followRedirects($response)->assertSee('コメントを入力してください');
     }
-
 
     public function testValidationMessageIsShownWhenCommentExceedsMaxLength()
     {

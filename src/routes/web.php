@@ -40,10 +40,11 @@ Route::middleware(['auth', 'verified', 'first.login'])->group(function(){
     Route::post('/item/{item_id}/comment', [CommentController::class, 'store']);
     Route::post('/item/{item_id}/like', [LikeController::class, 'update']);
     Route::get('/message/{item_id}', [MessageController::class, 'show'])
-        ->name('user.message');
+        ->name('user.message');//ヘッダー非表示判別の為'name'付与
     Route::post('/message/{item_id}', [MessageController::class, 'store']);
     Route::post('/message/edit/{message_id}', [MessageController::class, 'update']);
-    Route::post('/transaction/evaluation/{item_id}/{targetor_id}/{user_id}', [TransactionController::class, 'upsert']);
+    Route::post('/transaction/evaluation/{item_id}/{targetor_id}/{user_id}', [
+        TransactionController::class, 'upsert']);
 });
 
 //認証済操作

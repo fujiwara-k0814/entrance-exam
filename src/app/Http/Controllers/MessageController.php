@@ -17,6 +17,8 @@ class MessageController extends Controller
         $targetItem = Item::with('sell', 'delivery_address')->find($item_id);
         $seller = User::find($targetItem->sell->user_id);
 
+        //チャット画面の送信者、受信者振り分け
+        //送信者が出品者の場合、UI判別用でフラグを立てる
         if ($sender->id === $seller->id) {
             $receiver = User::find($targetItem->delivery_address->user_id);
             $isSeller = true;
@@ -25,6 +27,7 @@ class MessageController extends Controller
             $isSeller = false;
         }
 
+        //購入者が取引完了時の出品者モーダル表示としてフラグを立てる
         if ($isSeller && $targetItem->buyer_completed) {
             $showModal = true;
         } else {
@@ -57,6 +60,7 @@ class MessageController extends Controller
             )
             ->get();
 
+        //チャット画面ロード時に新着メッセージに対して既読のフラグを立てる
         $messages = Message::where('item_id', $targetItem->id)->orderBy('created_at')->get();
         foreach ($messages as $message) {
             if ($message->receiver_id === Auth::id()) {
@@ -66,6 +70,7 @@ class MessageController extends Controller
             }
         }
 
+        //送信画像を選択後に他のチャット画面に遷移した際にリセット
         if (session('item_id') !== $item_id) {
             session()->forget('add_image_path');
         }
@@ -84,7 +89,7 @@ class MessageController extends Controller
 
     public function store(MessageRequest $request, $item_id) 
     {
-        //画像選択時のみフォーム処理(button nameでのaction判定)
+        //画像選択時のみフォーム処理(button nameでのsend判定)
         if (!$request->has('send')) {
             //ブラウザバック時エラー対策
             if (!$request->file('image_path')) {
@@ -93,7 +98,7 @@ class MessageController extends Controller
 
             $imagePath = $request->file('image_path')->store('message_images', 'public');
 
-            //個別判定用でitem_id付与
+            //画像の各チャット画面判定用でitem_id付与
             session([
                 'add_image_path' => "storage/$imagePath",
                 'item_id' => $item_id,
@@ -107,6 +112,7 @@ class MessageController extends Controller
         $targetItem = Item::with('sell', 'delivery_address')->find($item_id);
         $seller = User::find($targetItem->sell->user_id);
 
+        //送信者と受信者の振り分け
         if ($sender->id === $seller->id) {
             $receiver = User::find($targetItem->delivery_address->user_id);
         } else {

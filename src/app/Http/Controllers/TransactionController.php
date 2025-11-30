@@ -8,6 +8,7 @@ use App\Models\UserEvaluation;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\TransactionCompletedMail;
 
 class TransactionController extends Controller
 {
@@ -21,6 +22,7 @@ class TransactionController extends Controller
 
         $score = $request->input('score') ? $request->input('score') : 0;
 
+        //ユーザーレビューレコードの有無で編集か新規作成
         if ($review) {
             $review->update([
                 'score' => $score,
@@ -33,6 +35,8 @@ class TransactionController extends Controller
             ]);
         }
 
+        //レビューをしたのが出品者か判定
+        //'items'レコードに出品者か購入者の取引完了フラグを立てる
         $item = Item::with('sell')->find($item_id);
         if ($item->sell->user_id === Auth::id()) {
             $item->update([
@@ -42,12 +46,11 @@ class TransactionController extends Controller
             $item->update([
                 'buyer_completed' => true,
             ]);
-            
+
+            //購入者の場合は出品者にメールを送信
             $seller = User::find($item->sell->user_id);
-            Mail::raw("出品商品「{$item->name}」の取引が完了しました。", 
-                function ($message) use ($seller) {
-                    $message->to($seller->email)->subject('取引完了のお知らせ');
-            });
+            Mail::to($seller->email)
+                ->send(new TransactionCompletedMail($item->name, $seller->email));
         }
 
         return redirect('/');

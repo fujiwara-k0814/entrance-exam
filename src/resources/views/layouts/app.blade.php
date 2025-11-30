@@ -17,13 +17,14 @@
                     <img src="/images/logo.svg" alt="ロゴ画像" class="header-logo">
                 </a>
             </div>
-            @if (!in_array(Route::currentRouteName(), ['login', 'register', 'verification.notice', 'user.message']))
+            @if (!in_array(Route::currentRouteName(), [
+                'login', 'register', 'verification.notice', 'user.message']))
                 <form action="/" method="get" class="header__search-form">
                     @if (request()->query('tab') === 'mylist')
                         <input type="hidden" name="tab" value="mylist">
                     @endif
-                    <input type="text" name="keyword" class="header__search-input" placeholder="なにをお探しですか？" 
-                        value="{{ request('keyword') }}">
+                    <input type="text" name="keyword" class="header__search-input" 
+                        placeholder="なにをお探しですか？" value="{{ request('keyword') }}">
                 </form>
                 <nav class="header__nav">
                     <ul class="header__nav-list">

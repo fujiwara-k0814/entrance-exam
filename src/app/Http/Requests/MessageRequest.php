@@ -56,8 +56,10 @@ class MessageRequest extends FormRequest
     {
         return [
             'image_path.file' => '画像はファイルを指定してください',
-            'image_path.mimes' => '画像の拡張子は.jpegまたは.pngを指定してください',
-            'image_path.regex' => '画像の拡張子は.jpegまたは.pngを指定してください',
+            'image_path.mimes' => '「.png」または「.jpeg」形式でアップロードしてください',
+            'image_path.regex' => '「.png」または「.jpeg」形式でアップロードしてください',
+
+            'content.max' => '本文は400文字以内で入力してください',
 
             'message.*.required' => '本文を入力してください',
             'message.*.max' => '本文は400文字以内で入力してください',

@@ -14,10 +14,10 @@ class MypageController extends Controller
     public function create()
     {
         $user = Auth::user();
-        
+
         return view('profile', compact('user'));
     }
-    
+
     public function store(ProfileRequest $request)
     {
         //画像選択時のみフォーム処理(button nameでのaction判定)
@@ -101,6 +101,7 @@ class MypageController extends Controller
                     ->take(1)
             )
             ->get();
+
         //トータル通知件数
         $totalNotifications = $transactionItems->sum('unread_messages_count');
 

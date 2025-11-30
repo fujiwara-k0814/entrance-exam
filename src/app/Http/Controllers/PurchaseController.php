@@ -33,13 +33,13 @@ class PurchaseController extends Controller
             return redirect("/purchase/$item_id")->withInput();
         }
 
-        
+
         //全体フォーム処理
         //DB処理
         $item = Item::find($item_id);
         $item->delivery_address_id = $request->input('delivery_address_id');
         $item->save();
-        
+
         //Stripe処理
         Stripe::setApiKey(config('services.stripe.secret')); 
         $session = Session::create([

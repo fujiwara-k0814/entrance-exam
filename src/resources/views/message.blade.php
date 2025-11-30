@@ -36,15 +36,20 @@
                     <div class="review__content">
                         <span class="review-comment">今回の取引相手はどうでしたか？</span>
                         <div class="review__score">
-                            <input type="radio" id="star5" name="score" value="5" @if($review?->score == 5) checked @endif>
+                            <input type="radio" id="star5" name="score" value="5" 
+                                @if($review?->score == 5) checked @endif>
                             <label for="star5">★</label>
-                            <input type="radio" id="star4" name="score" value="4" @if($review?->score == 4) checked @endif>
+                            <input type="radio" id="star4" name="score" value="4" 
+                                @if($review?->score == 4) checked @endif>
                             <label for="star4">★</label>
-                            <input type="radio" id="star3" name="score" value="3" @if($review?->score == 3) checked @endif>
+                            <input type="radio" id="star3" name="score" value="3" 
+                                @if($review?->score == 3) checked @endif>
                             <label for="star3">★</label>
-                            <input type="radio" id="star2" name="score" value="2" @if($review?->score == 2) checked @endif>
+                            <input type="radio" id="star2" name="score" value="2" 
+                                @if($review?->score == 2) checked @endif>
                             <label for="star2">★</label>
-                            <input type="radio" id="star1" name="score" value="1" @if($review?->score == 1) checked @endif>
+                            <input type="radio" id="star1" name="score" value="1" 
+                                @if($review?->score == 1) checked @endif>
                             <label for="star1">★</label>
                         </div>
                     </div>
@@ -82,7 +87,10 @@
                             </div>
                         @endif
                         <div class="message__inner message__inner-sender">
-                            <textarea rows="1" name="message[{{ $message->id }}]" id="message_{{ $message->id }}" class="user-message user-message-sender">{{ old("message.$message->id") ?? $message->content }}</textarea>
+                            <textarea oninput="autoResize(this)" rows="1" name="message[{{ $message->id }}]" 
+                                id="message_{{ $message->id }}" 
+                                class="user-message user-message-sender">{{ old("message.$message->id") 
+                                ?? $message->content }}</textarea>
                         </div>
                         <div class="button__wrapper">
                             <button type="submit" class="message__button" name="edit" value="1">編集</button>
@@ -131,9 +139,12 @@
                     @enderror
                 </div>
                 <div class="send__content">
-                    <textarea name="content" id="content" class="send__input" placeholder="取引メッセージを記入してください">{{ old('content') }}</textarea>
+                    <textarea name="content" id="content" class="send__input" 
+                        placeholder="取引メッセージを記入してください" 
+                        oninput="autoResize(this)">{{ old('content') }}</textarea>
                     <div class="send-button__wrapper">
-                        <input type="file" name="image_path" id="image_path" hidden onchange="this.form.submit()">
+                        <input type="file" name="image_path" 
+                            id="image_path" hidden onchange="this.form.submit()">
                         <label for="image_path" class="image-add__label">画像を追加</label>
                         <input type="hidden" name="image_path" value="{{ session('add_image_path') }}">
                         <button type="submit" class="send__button" name="send" value="1">
@@ -164,10 +175,27 @@
         localStorage.setItem('draft_content_' + chatId, textarea.value);
     });
 
-    //メッセージのtextarea高さ調整
-    document.querySelectorAll('.user-message-sender').forEach(textarea => {
-        textarea.style.height = 'auto';
-        textarea.style.height = textarea.scrollHeight + 'px';
+    //送信欄のtextarea高さ調整
+    window.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.send__input').forEach(textarea => {
+            autoResize(textarea);
+        });
     });
+
+    //メッセージのtextarea高さ調整
+    window.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.user-message-sender').forEach(textarea => {
+            autoResize(textarea);
+        });
+    });
+
+    //高さ調整関数
+    function autoResize(el) {
+        //高さリセット
+        el.style.height = 'auto';
+        //値によって可変
+        el.style.height = el.scrollHeight + 'px';
+    }
+    window.autoResize = autoResize;
 </script>
 @endsection
