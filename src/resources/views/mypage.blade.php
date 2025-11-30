@@ -17,7 +17,7 @@
             <div class="mypage-review__content">
                 <h1 class="mypage-name">{{ $user->name }}</h1>
                 <div class="review__wrapper">
-                    @if ($average)
+                    @if ($average !== null)
                         {{-- '5' -> 評価が5段階あるため --}}
                         @for ($i = 1; $i <= 5; $i++)
                             @if ($i <= $average)

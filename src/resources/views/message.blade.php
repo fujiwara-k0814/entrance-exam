@@ -159,32 +159,25 @@
 @if(session('success'))
 <script>
     //メッセージ送信成功時削除
-    const chatId = {{ $targetItem->id }};
-    localStorage.removeItem('draft_content_' + chatId);
+    const messageId = {{ $targetItem->id }};
+    localStorage.removeItem('draft_content_' + messageId);
 </script>
 @endif
 <script>
     const chatId = {{ $targetItem->id }};
-    const textarea = document.getElementById('content');
+    const inputarea = document.getElementById('content');
 
     //画面ロード時に各チャット毎に'content'を復元
-    textarea.value = localStorage.getItem('draft_content_' + chatId) || "";
+    inputarea.value = localStorage.getItem('draft_content_' + chatId) || "";
 
     //各チャット毎に入力毎時'content'をブラウザの'localStorage'に保存
-    textarea.addEventListener('input', () => {
-        localStorage.setItem('draft_content_' + chatId, textarea.value);
+    inputarea.addEventListener('input', () => {
+        localStorage.setItem('draft_content_' + chatId, inputarea.value);
     });
 
     //送信欄のtextarea高さ調整
     window.addEventListener('DOMContentLoaded', () => {
-        document.querySelectorAll('.send__input').forEach(textarea => {
-            autoResize(textarea);
-        });
-    });
-
-    //メッセージのtextarea高さ調整
-    window.addEventListener('DOMContentLoaded', () => {
-        document.querySelectorAll('.user-message-sender').forEach(textarea => {
+        document.querySelectorAll('textarea').forEach(textarea => {
             autoResize(textarea);
         });
     });

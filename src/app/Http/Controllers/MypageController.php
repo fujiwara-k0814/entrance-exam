@@ -65,11 +65,11 @@ class MypageController extends Controller
     public function show(Request $request)
     {
         $user = Auth::user();
+        $average = UserEvaluation::where('targeter_id', $user->id)->first();
 
-        if (UserEvaluation::where('targeter_id', $user->id)) {
+        //レコードが無ければnull
+        if ($average) {
             $average = round(UserEvaluation::where('targeter_id', $user->id)->avg('score'));
-        } else {
-            $average = null;
         }
 
         //取引中アイテムの取得
