@@ -175,7 +175,7 @@
         localStorage.setItem('draft_content_' + chatId, inputarea.value);
     });
 
-    //送信欄のtextarea高さ調整
+    //各textarea高さ調整
     window.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('textarea').forEach(textarea => {
             autoResize(textarea);
