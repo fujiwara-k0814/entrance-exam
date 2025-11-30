@@ -105,7 +105,7 @@ MAIL_FROM_NAME="${APP_NAME}"
   
   
 ## ER図  
-<img width="644" height="709" alt="image" src="https://github.com/user-attachments/assets/6b62eeee-ebc2-4b37-b516-71526692f4b1" />  
+<img width="1075" height="768" alt="image" src="https://github.com/user-attachments/assets/53f51866-36eb-4b1c-bc00-e55a1b201d83" />  
   
   
 ## URL  
