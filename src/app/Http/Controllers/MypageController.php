@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Item;
 use App\Http\Requests\ProfileRequest;
 use App\Models\UserEvaluation;
+use App\Models\Message;
 
 class MypageController extends Controller
 {
@@ -92,9 +93,13 @@ class MypageController extends Controller
                         ->where('sender_id', '!=', Auth::id());
                 }
             ])
-            ->with(['messages' => function ($q) {
-                $q->orderBy('created_at', 'asc');
-            }])
+            ->orderByDesc(
+                Message::select('created_at')
+                    ->whereColumn('item_id', 'items.id')
+                    ->where('receiver_id', Auth::id())
+                    ->latest()
+                    ->take(1)
+            )
             ->get();
         //トータル通知件数
         $totalNotifications = $transactionItems->sum('unread_messages_count');
@@ -107,8 +112,10 @@ class MypageController extends Controller
             $items = $user->soldItems;
         }
 
-        //プロフィール画像、出品画像リセット
-        session()->forget(['profile_image_path', 'item_image_path']);
+        //プロフィール画像、出品画像、取引送信画像リセット
+        session()->forget([
+            'profile_image_path', 'item_image_path', 'add_image_path', 'item_id'
+        ]);
 
         return view('mypage', compact('user', 'items', 'average', 'totalNotifications'));
     }

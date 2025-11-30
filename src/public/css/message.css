@@ -6,7 +6,8 @@
 }
 
 .other__content {
-    width: 240px;
+    max-width: 200px;
+    width: 100%;
     background-color: #868686;
     text-align: center;
     padding: 0 20px;
@@ -21,7 +22,7 @@
 
 .other-item {
     display: block;
-    font-size: 20px;
+    font-size: 18px;
     background-color: #eeefeb;
     color: black;
     text-decoration: none;
@@ -180,14 +181,21 @@
 }
 
 .item__wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     margin-left: 40px;
+    text-align: center;
 }
 
 .item-name {
+    margin: 10px 0;
     font-size: 42px;
 }
 
 .item-price {
+    margin: 10px 0;
     font-size: 34px;
 }
 
@@ -200,14 +208,14 @@
 }
 
 .message__group {
+    justify-content: flex-start;
     margin-top: 25px;
-    margin-right: auto;
+    display: flex;
+    flex-direction: column;
 }
 
-.group-sender {
-    margin-right: 0;
-    margin-left: auto;
-    text-align: right;
+.message__group-sender {
+    justify-content: flex-end;
 }
 
 .user__wrapper {
@@ -215,12 +223,16 @@
     align-items: center;
 }
 
+.user__wrapper-sender {
+    justify-content: flex-end;
+}
+
 .user-name {
     font-weight: bold;
     padding-left: 10px;
 }
 
-.name-sender {
+.user-name-sender {
     padding-right: 10px;
 }
 
@@ -242,9 +254,16 @@
 }
 
 .message-image__inner {
+    padding: 10px 10px;
     width: 200px;
     height: 200px;
     margin-top: 10px;
+    background-color: #d9d9d9;
+    border-radius: 5px;
+}
+
+.message-image__inner-sender {
+    margin-left: auto;
 }
 
 .message-image {
@@ -254,21 +273,41 @@
 }
 
 .message__inner {
-    max-width: 600px;
-    padding: 5px;
+    display: flex;
+    align-items: center;
+    max-width: 500px;
+    width: 100%;
+    padding: 5px 10px;
     margin-top: 10px;
     background-color: #d9d9d9;
     border-radius: 5px;
 }
 
+.message__inner-sender {
+    margin-right: 0;
+    margin-left: auto;
+}
+
 .user-message {
     width: 100%;
     height: 100%;
-    resize: none;
     border: none;
     background-color: #d9d9d9;
     font-size: 16px;
     font-weight: bold;
+    text-align: center;
+}
+
+.user-message-sender {
+    resize: none;
+    overflow: hidden;
+    font-family: inherit;
+    min-height: 25px;
+    height: auto;
+}
+
+.button__wrapper {
+    margin-left: auto;
 }
 
 .message__button {
@@ -282,12 +321,13 @@
     height: 25px;
     font-size: 16px;
     color: red;
+    margin-left: auto;
 }
 
 .send-form {
     position: fixed;
     bottom: 0;
-    max-width: 1280px;
+    max-width: 1540px;
     width: 100%;
     padding-bottom: 15px;
 }
@@ -309,20 +349,28 @@
     object-fit: cover;
 }
 
-.send__wrapper {
+.send__content {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
+    width: 82%;
 }
 
 .send__input {
-    max-width: 980px;
+    max-width: 73%;
     width: 100%;
     height: 50px;
     font-size: 24px;
     text-align: left;
+    padding-top: 10px;
     padding-left: 10px;
     resize: none;
+    margin-right: 20px;
+}
+
+.send-button__wrapper {
+    display: flex;
+    align-items: flex-end;
 }
 
 .image-add__label {
@@ -350,4 +398,75 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+}
+
+@media screen and (max-width: 1360px) {
+    .message__inner {
+        max-width: 400px;
+    }
+
+    .send__input {
+        max-width: 65%;
+    }
+}
+
+@media screen and (max-width: 1260px) {
+    .receiver__title {
+        margin-left: 20px;
+        font-size: 26px;
+    }
+
+    .message__inner {
+        max-width: 300px;
+    }
+
+    .send__content {
+        max-width: 78%;
+    }
+
+    .send__input {
+        max-width: 60%;
+    }
+}
+
+@media screen and (max-width: 980px) {
+    .receiver__content {
+        flex-direction: column;
+    }
+
+    .receiver__title {
+        font-size: 22px;
+    }
+
+    .item__content {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .item__wrapper {
+        margin: 0;
+    }
+
+    .item-name,
+    .item-price {
+        margin: 0;
+    }
+
+    .chat__content {
+        max-height: 300px;
+    }
+
+    .message__inner {
+        max-width: 200px;
+    }
+
+    .send__content {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .send__input {
+        max-width: 80%;
+    }
 }

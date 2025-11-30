@@ -1,5 +1,5 @@
 <a href="{{ request('page') === 'transaction'
-    ? "/meessage/$item->id" 
+    ? "/message/$item->id" 
     : "/item/$item->id" }}" class="item-detail__link">
     <div class="item-card">
         <div class="item-image__content">

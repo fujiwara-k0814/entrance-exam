@@ -33,18 +33,12 @@
                 <div class="item-icon__inner">
                     <form action="/item/{{ $item->id }}/like" method="post" class="item-like-form">
                         @csrf
-                        @if (Auth::check())
-                            @if ($user->likes()->where('item_id', $item->id)->exists())
-                                <button type="submit" class="item-like-button-active">
-                                    <img src="/images/liked_icon.svg" alt="いいね画像" class="item__icon">
-                                </button>
-                            @else
-                                <button type="submit" class="item-like-button-active">
-                                    <img src="/images/like_icon.svg" alt="いいね画像" class="item__icon">
-                                </button>
-                            @endif
+                        @if ($user?->likes()?->where('item_id', $item->id)->exists())
+                            <button type="submit" class="item-like-button-active">
+                                <img src="/images/liked_icon.svg" alt="いいね画像" class="item__icon">
+                            </button>
                         @else
-                            <button type="button" class="item-like-button">
+                            <button type="submit" class="item-like-button-active">
                                 <img src="/images/like_icon.svg" alt="いいね画像" class="item__icon">
                             </button>
                         @endif
@@ -59,15 +53,11 @@
                 </div>
             </div>
         </div>
-        @if (Auth::check())
-            @if (!$item->delivery_address_id)
-                @if ($user->sells->where('item_id', $item->id)->isEmpty())
-                    <a href="/purchase/{{ $item->id }}" class="purchase-link-active">購入手続きへ</a>
-                @else
-                    <span class="purchase-link">購入手続きへ</span>
-                @endif
-            @else
+        @if (!$item->delivery_address_id)
+            @if ($user?->sells?->where('item_id', $item->id)->isNotEmpty())
                 <span class="purchase-link">購入手続きへ</span>
+            @else
+                <a href="/purchase/{{ $item->id }}" class="purchase-link-active">購入手続きへ</a>
             @endif
         @else
             <span class="purchase-link">購入手続きへ</span>
@@ -119,11 +109,7 @@
                         {{ $message }}
                     @enderror
                 </div>
-                @if (Auth::user())
-                    <button type="submit" class="comment-form__button-active">コメントを送信する</button>
-                @else
-                    <button type="button" class="comment-form__button">コメントを送信する</button>
-                @endif
+                <button type="submit" class="comment-form__button-active">コメントを送信する</button>
             </form>
         </div>
     </div>

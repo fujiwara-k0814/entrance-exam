@@ -17,6 +17,10 @@ class PurchaseController extends Controller
         $user = Auth::user();
         $deliveryAddress = $user->delivery_address;
 
+        if ($user?->sells?->where('item_id', $item->id)->isNotEmpty()) {
+            return redirect('/');
+        }
+
         return view('purchase', compact('item', 'deliveryAddress'));
     }
 

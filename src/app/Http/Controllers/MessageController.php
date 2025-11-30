@@ -48,13 +48,27 @@ class MessageController extends Controller
                 })->where('seller_completed', false);
             })
             ->where('id', '!=', $targetItem->id)
-            ->with(['messages' => function ($q) {
-                $q->orderBy('created_at', 'asc');
-            }])
+            ->orderByDesc(
+                Message::select('created_at')
+                    ->whereColumn('item_id', 'items.id')
+                    ->where('receiver_id', Auth::id())
+                    ->latest()
+                    ->take(1)
+            )
             ->get();
 
         $messages = Message::where('item_id', $targetItem->id)->orderBy('created_at')->get();
-        
+        foreach ($messages as $message) {
+            if ($message->receiver_id === Auth::id()) {
+                $message->update([
+                    'is_read' => true,
+                ]);
+            }
+        }
+
+        if (session('item_id') !== $item_id) {
+            session()->forget('add_image_path');
+        }
 
         return view('message', compact(
             'sender', 
@@ -74,14 +88,18 @@ class MessageController extends Controller
         if (!$request->has('send')) {
             //ブラウザバック時エラー対策
             if (!$request->file('image_path')) {
-                return redirect("/meessage/$item_id")->withInput();
+                return redirect("/message/$item_id")->withInput();
             }
 
             $imagePath = $request->file('image_path')->store('message_images', 'public');
 
-            session(['add_image_path' => "storage/$imagePath"]);
+            //個別判定用でitem_id付与
+            session([
+                'add_image_path' => "storage/$imagePath",
+                'item_id' => $item_id,
+            ]);
 
-            return redirect("/meessage/$item_id")->withInput();
+            return redirect("/message/$item_id")->withInput();
         }
 
         /** @var \App\Models\User $sender */
@@ -103,9 +121,9 @@ class MessageController extends Controller
             'image_path' => $request->input('image_path'),
         ]);
 
-        session()->forget('add_image_path');
+        session()->forget('add_image_path', 'item_id');
 
-        return redirect("/meessage/$item_id");
+        return redirect("/message/$item_id")->with('success', true);
     }
 
     public function update(MessageRequest $request, $message_id) 
@@ -116,10 +134,10 @@ class MessageController extends Controller
             $message->delete();
         } else {
             $message->update([
-                'content' => $request->input('message'),
+                'content' => $request->input("message.$message_id"),
             ]);
         }
 
-        return redirect("/meessage/$message->item_id");
+        return redirect("/message/$message->item_id");
     }
 }

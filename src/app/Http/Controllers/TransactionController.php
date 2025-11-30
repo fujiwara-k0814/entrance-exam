@@ -44,8 +44,9 @@ class TransactionController extends Controller
             ]);
             
             $seller = User::find($item->sell->user_id);
-            Mail::raw("取引が完了しました。", function ($message) use ($seller) {
-                $message->to($seller->email)->subject('取引完了のお知らせ');
+            Mail::raw("出品商品「{$item->name}」の取引が完了しました。", 
+                function ($message) use ($seller) {
+                    $message->to($seller->email)->subject('取引完了のお知らせ');
             });
         }
 

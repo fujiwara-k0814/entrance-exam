@@ -39,10 +39,10 @@ Route::middleware(['auth', 'verified', 'first.login'])->group(function(){
     Route::get('/mypage', [MypageController::class, 'show']);
     Route::post('/item/{item_id}/comment', [CommentController::class, 'store']);
     Route::post('/item/{item_id}/like', [LikeController::class, 'update']);
-    Route::get('/meessage/{item_id}', [MessageController::class, 'show'])
+    Route::get('/message/{item_id}', [MessageController::class, 'show'])
         ->name('user.message');
-    Route::post('/meessage/{item_id}', [MessageController::class, 'store']);
-    Route::post('/meessage/edit/{message_id}', [MessageController::class, 'update']);
+    Route::post('/message/{item_id}', [MessageController::class, 'store']);
+    Route::post('/message/edit/{message_id}', [MessageController::class, 'update']);
     Route::post('/transaction/evaluation/{item_id}/{targetor_id}/{user_id}', [TransactionController::class, 'upsert']);
 });
 

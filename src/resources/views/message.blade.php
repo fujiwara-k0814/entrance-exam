@@ -9,7 +9,7 @@
     <div class="other__content">
         <p class="other__title">その他の取引</p>
         @foreach ($items as $item)
-            <a href="/meessage/{{ $item->id }}" class="other-item">
+            <a href="/message/{{ $item->id }}" class="other-item">
                 {{ $item->name }}
             </a>
         @endforeach
@@ -25,13 +25,8 @@
                 </div>
                 <p class="receiver__title">{{ $receiver->name }}さんとの取引画面</p>
             </div>
-            @php
-                $showModal = true;
-            @endphp
-            @if (!$isSeller)
-                <input type="checkbox" id="modal" class="modal-display" hidden @checked($showModal)>
-                <label for="modal" class="modal__button">取引を完了する</label>
-            @endif
+            <input type="checkbox" id="modal" class="modal-display" hidden @if($showModal) checked @endif>
+            <label for="modal" class="modal__button" @if($isSeller) hidden @endif>取引を完了する</label>
             <div class="transaction-modal">
                 <form 
                     action="/transaction/evaluation/{{ $targetItem->id }}/{{ $receiver->id }}/{{ $sender->id }}" 
@@ -71,10 +66,10 @@
         <div class="chat__content">
             @foreach ($messages as $message)
                 @if ($message->sender_id === $sender->id)
-                    <form action="/meessage/edit/{{ $message->id }}" method="post" class="message__group group-sender"  enctype="multipart/form-data">
+                    <form action="/message/edit/{{ $message->id }}" method="post" class="message__group message__group-sender"  enctype="multipart/form-data">
                         @csrf
-                        <div class="user__wrapper">
-                            <span class="user-name name-sender">{{ $sender->name }}</span>
+                        <div class="user__wrapper user__wrapper-sender">
+                            <span class="user-name user-name-sender">{{ $sender->name }}</span>
                             <div class="user-image__inner">
                                 @if ($sender->image_path)
                                     <img src="{{ asset($sender->image_path) }}" alt="画像" class="user-image">
@@ -82,15 +77,17 @@
                             </div>
                         </div>
                         @if ($message->image_path)
-                            <div class="message-image__inner">
+                            <div class="message-image__inner message-image__inner-sender">
                                 <img src="{{ asset($message->image_path) }}" alt="画像" class="message-image">
                             </div>
                         @endif
-                        <div class="message__inner">
-                            <textarea name="message[{{ $message->id }}]" id="message_{{ $message->id }}" class="user-message">{{ old("message.$message->id") ?? $message->content }}</textarea>
+                        <div class="message__inner message__inner-sender">
+                            <textarea rows="1" name="message[{{ $message->id }}]" id="message_{{ $message->id }}" class="user-message user-message-sender">{{ old("message.$message->id") ?? $message->content }}</textarea>
                         </div>
-                        <button type="submit" class="message__button" name="edit" value="1">編集</button>
-                        <button type="submit" class="message__button" name="delete" value="1">削除</button>
+                        <div class="button__wrapper">
+                            <button type="submit" class="message__button" name="edit" value="1">編集</button>
+                            <button type="submit" class="message__button" name="delete" value="1">削除</button>
+                        </div>
                         <div class="message__error">
                             @error("message.$message->id")
                                 {{ $message }}
@@ -113,18 +110,13 @@
                             </div>
                         @endif
                         <div class="message__inner">
-                            <span class="user-message">{{ $message->content }}</span>
+                            <span class="user-message">{!! nl2br(e($message->content)) !!}</span>
                         </div>
                     </div>
                 @endif
             @endforeach
-            <form action="/meessage/{{ $targetItem->id }}" method="post" class="send-form" enctype="multipart/form-data" id="sendForm">
+            <form action="/message/{{ $targetItem->id }}" method="post" class="send-form" enctype="multipart/form-data" id="sendForm">
                 @csrf
-                <div class="send-form__error">
-                    @error('image_path')
-                        {{ $message }}
-                    @enderror
-                </div>
                 <div class="send-image__inner">
                     @if (session('add_image_path'))
                         <img src="{{ asset(session('add_image_path')) }}" alt="送信画像" class="send-image">
@@ -134,20 +126,32 @@
                     @error('content')
                         {{ $message }}
                     @enderror
+                    @error('image_path')
+                        {{ $message }}
+                    @enderror
                 </div>
-                <div class="send__wrapper">
+                <div class="send__content">
                     <textarea name="content" id="content" class="send__input" placeholder="取引メッセージを記入してください">{{ old('content') }}</textarea>
-                    <input type="file" name="image_path" id="image_path" hidden onchange="this.form.submit()">
-                    <label for="image_path" class="image-add__label">画像を追加</label>
-                    <input type="hidden" name="image_path" value="{{ session('add_image_path') }}">
-                    <button type="submit" class="send__button" name="send" value="1">
-                        <img src="/images/send_icon.jpg" alt="送信画像">
-                    </button>
+                    <div class="send-button__wrapper">
+                        <input type="file" name="image_path" id="image_path" hidden onchange="this.form.submit()">
+                        <label for="image_path" class="image-add__label">画像を追加</label>
+                        <input type="hidden" name="image_path" value="{{ session('add_image_path') }}">
+                        <button type="submit" class="send__button" name="send" value="1">
+                            <img src="/images/send_icon.jpg" alt="送信画像">
+                        </button>
+                    </div>
                 </div>
             </form>
         </div>
     </div>
 </div>
+@if(session('success'))
+<script>
+    //メッセージ送信成功時削除
+    const chatId = {{ $targetItem->id }};
+    localStorage.removeItem('draft_content_' + chatId);
+</script>
+@endif
 <script>
     const chatId = {{ $targetItem->id }};
     const textarea = document.getElementById('content');
@@ -160,9 +164,10 @@
         localStorage.setItem('draft_content_' + chatId, textarea.value);
     });
 
-    //各チャット毎に送信時リセット
-    document.getElementById('sendForm').addEventListener('submit', () => {
-        localStorage.removeItem('draft_content_' + chatId);
+    //メッセージのtextarea高さ調整
+    document.querySelectorAll('.user-message-sender').forEach(textarea => {
+        textarea.style.height = 'auto';
+        textarea.style.height = textarea.scrollHeight + 'px';
     });
 </script>
 @endsection

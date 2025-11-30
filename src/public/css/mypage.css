@@ -135,3 +135,20 @@
     padding: 60px 40px;
     width: 100%;
 }
+
+@media screen and (max-width: 1150px) {
+    .mypage-image__content {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .mypage-image__wrapper {
+        width: auto;
+        margin-left: 0;
+    }
+
+    .mypage__edit-link {
+        margin-top: 30px;
+    }
+}
