@@ -1,7 +1,7 @@
 # FleaMarketApp(フリマアプリ)  
   
 ## 環境構築  
-Dockerビルド  
+### Dockerビルド  
  1. クローンを生成  
  ``` bash
  git clone git@github.com:fujiwara-k0814/first-mock-project.git  
@@ -14,7 +14,7 @@ Dockerビルド
 ※MySQLはOSの都合上、各人でファイルを編集  
   
   
-Laravel環境構築  
+### Laravel環境構築  
  1. item_imagesのファイルを生成  
  ``` bash
  mkdir src/storage/app/public/item_images
@@ -82,10 +82,20 @@ Laravel環境構築
  composer require stripe/stripe-php
  ```
   
-テスト実行コマンド  
-``` bash
-php artisan test tests/Feature
-```
+### メール認証  
+MailHogというツールを使用しています。  
+.envの設定が以下になっているか確認してください。  
+尚、MAIL_FROM_ADDRESSは任意のメールアドレスを入力してください。  
+ ``` bash
+MAIL_MAILER=smtp
+MAIL_HOST=mailhog
+MAIL_PORT=1025
+MAIL_USERNAME=null
+MAIL_PASSWORD=null
+MAIL_ENCRYPTION=null
+MAIL_FROM_ADDRESS=example@example.com
+MAIL_FROM_NAME="${APP_NAME}"
+ ```
   
   
 ## 使用技術  
@@ -104,10 +114,32 @@ php artisan test tests/Feature
 ・MailHog：http://localhost:8025/  
   
   
-## コーチと合意を取った内容  
-・メール認証誘導画面が表示されている時は認証が完了するまで他の操作を受け付けない  
-  (商品一覧画面へのページ遷移など)  
-・初回ログイン時のプロフィール編集画面への遷移を初期登録として、完了するまで他の操作を受け付けない  
-  (他の画面への遷移や商品検索など。ログアウトボタンのみ機能)  
-・メール認証画面の「認証はこちらから」を押下げした場合にMailHogのサイトへ遷移し、手動で認証を得てから、  
-  プロフィール編集画面へ遷移する
+## テストアカウント  
+  
+・CO01 - CO05 出品ユーザー  
+name : テストユーザー1  
+email : user1@example.com  
+password : password  
+  
+・CO06 - CO010 出品ユーザー  
+name : テストユーザー2  
+email : user2@example.com  
+password : password  
+  
+・未出品ユーザー  
+name : テストユーザー3  
+email : user3@example.com  
+password : password  
+  
+### テストコマンド  
+``` bash
+php artisan test tests/Feature
+```
+  
+  
+## 折り込み内容  
+・追加UI  
+・追加機能  
+・変更分ダミーデータ  
+・レスポンシブ対応(768-850px)  
+・追加分テスト  
