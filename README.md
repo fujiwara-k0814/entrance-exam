@@ -4,7 +4,7 @@
 ### Dockerビルド  
  1. クローンを生成  
  ``` bash
- git clone git@github.com:fujiwara-k0814/first-mock-project.git  
+ git clone git@github.com:fujiwara-k0814/entrance-exam.git  
  ```
  2. DockerDesktopアプリを立ち上げる  
  3. Dockerをビルドする  
